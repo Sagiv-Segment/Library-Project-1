@@ -2,9 +2,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from models import db
-from models.user import User
-from models.book import Book
-from models.loans import Loan
+from models.customer import Customer
+from models.game import Game
+from models.admin import Admin
 
 
 app = Flask(__name__)  # - create a flask instance
@@ -18,17 +18,19 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
 db.init_app(app)  # initializes the databsewith the flask application
 
+CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5500"])
 
 # this is a decorator from the flask module to define a route for for adding a book, supporting POST requests.(check the decorator summary i sent you and also the exercises)
 @app.route('/books', methods=['POST'])
 def add_book():
     data = request.json  # this is parsing the JSON data from the request body
-    new_book = Book(
+    new_book = Game(
         title=data['title'],  # Set the title of the new book.
-        author=data['author'],  # Set the author of the new book.
-        year_published=data['year_published'],
-        # Set the types(fantasy, thriller, etc...) of the new book.
-        types=data['types']
+        genre=data['genre'],  # Set the author of the new book.
+        price=data['price'],
+        quantity=data['quantity'],
+        loan_status = data['loan_status'],
+        customer_id = data['customer_id']
         # add other if needed...
     )
     db.session.add(new_book)  # add the bew book to the database session
@@ -40,7 +42,7 @@ def add_book():
 @app.route('/books', methods=['GET'])
 def get_books():
     try:
-        books = Book.query.all()                    # Get all the books from the database
+        books = Game.query.all()                    # Get all the books from the database
 
         # Create empty list to store formatted book data we get from the database
         books_list = []
@@ -49,9 +51,11 @@ def get_books():
             book_data = {                          # Create a dictionary for each book
                 'id': book.id,
                 'title': book.title,
-                'author': book.author,
-                'year_published': book.year_published,
-                'types': book.types
+                'genre': book.genre,
+                'price': book.price,
+                'quantity': book.quantity,
+                'loan_status': book.loan_status,
+                'customer_id': book.customer_id
             }
             # Add the iterated book dictionary to our list
             books_list.append(book_data)
@@ -67,10 +71,35 @@ def get_books():
             'message': str(e)
         }), 500                                    #
 
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"success": False, "message": "Please enter both username and password."}), 400
+
+    user = Admin.query.filter_by(username=username).first()
+
+    if user and user.check_password(password):
+        # If credentials are valid, return a success response
+        return jsonify({"success": True}), 200
+    else:
+        return jsonify({"success": False, "message": "Invalid credentials."}), 401
+
+# LOGIN
+
+
+
+
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # Create all database tables defined in your  models(check the models folder)
+    # with app.app_context():
+        # new_user = Admin(username="admin")
+        # new_user.set_password("password123")  # Securely hash password
+        # db.session.add(new_user)
+        # db.session.commit()
 
     # with app.test_client() as test:
     #     response = test.post('/books', json={  # Make a POST request to /books endpoint with book  data

@@ -4,20 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Library Management System</title>
-    <link rel="stylesheet" href="static/css/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     
   </head>
   <body>
     <div class="container">
-      <div id="auth-section">
-        <h2>Authentication</h2>
-        <div id="login-form">
-          <input type="text" id="username" placeholder="Username" />
-          <input type="password" id="password" placeholder="Password" />
-          <button onclick="login()">Login</button>
-          <button onclick="register()">Register</button>
-        </div>
-      </div>
+      
 
       <div id="main-section" class="hidden">
         <div class="header">
@@ -29,9 +21,11 @@
           <h2>Add New Book</h2>
           <div class="form-group">
             <input type="text" id="book-title" placeholder="Title" />
-            <input type="text" id="book-author" placeholder="Author" />
-            <input type="text" id="book-year-published" placeholder="Year Published" />
-            <input type="text" id="book-type" placeholder="type" />
+            <input type="text" id="book-author" placeholder="Genres" />
+            <input type="text" id="book-year-published" placeholder="Price" />
+            <input type="text" id="game-quantity" placeholder="Quantity" />
+            <input type="text" id="loan-status" placeholder="Loan status" />
+            <input type="text" id="user-id" placeholder="User ID" />
             <button onclick="addBook()">Add Book</button>
           </div>
 

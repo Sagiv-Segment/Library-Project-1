@@ -2,13 +2,12 @@
 
 from . import db
 
-class User(db.Model):
+class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    phone_number = db.Column(db.String(10), nullable=False)
-    city = db.Column(db.String(50), nullable=False)
-    age = db.Column(db.Integer, nullable=True)
-    # loan_id = db.Column()
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    games = db.relationship('Game', backref='customer', lazy=True)
 
 
 
