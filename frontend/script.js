@@ -1,7 +1,7 @@
 // function to get all books from the API
 async function getBooks() {
     try {
-        const response = await axios.get('http://127.0.0.1:5000/books');
+        const response = await axios.get('http://127.0.0.1:5000/games');
         const booksList = document.getElementById('books-list');
         booksList.innerHTML = ''; // Clear existing list
 
@@ -28,28 +28,34 @@ async function addBook() {
     const year_published = document.getElementById('book-year-published').value;
     const types = document.getElementById('book-type').value;
 
-    try {
-        await axios.post('http://127.0.0.1:5000/books', {
-            title: title,
-            author: author,
-            year_published: year_published,
-            types: types
-        });
-        
-        // Clear form fields
-        document.getElementById('book-title').value = '';
-        document.getElementById('book-author').value = '';
-        document.getElementById('book-year-published').value = '';
-        document.getElementById('book-type').value = '';
-
-        // Refresh the books list
-        getBooks();
-        
-        alert('Book added successfully!');
-    } catch (error) {
-        console.error('Error adding book:', error);
-        alert('Failed to add book');
+    if (title == '' || author == '' ||  year_published == '' ||  types == ''){
+        alert("Input can not be empty")
     }
+    else{
+        try {
+            await axios.post('http://127.0.0.1:5000/games', {
+                title: title,
+                author: author,
+                year_published: year_published,
+                types: types
+            });
+            
+            // Clear form fields
+            document.getElementById('book-title').value = '';
+            document.getElementById('book-author').value = '';
+            document.getElementById('book-year-published').value = '';
+            document.getElementById('book-type').value = '';
+    
+            // Refresh the books list
+            getBooks();
+            
+            alert('Book added successfully!');
+        } catch (error) {
+            console.error('Error adding book:', error);
+            alert('Failed to add book');
+        }
+    }
+    
 }
 
 // Load all books when page loads
