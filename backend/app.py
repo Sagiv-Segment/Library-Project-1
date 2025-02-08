@@ -88,9 +88,38 @@ def login():
     else:
         return jsonify({"success": False, "message": "Invalid credentials."}), 401
 
-# LOGIN
 
 
+@app.route('/books/<int:book_id>', methods=['DELETE'])
+def delete_book(book_id):
+    try:
+        # Query the database for the book with the given ID
+        book = Game.query.get(book_id)
+
+        # If the book doesn't exist, return a 404 error
+        if not book:
+            return jsonify({
+                'error': 'Book not found',
+                'message': f'No book found with ID {book_id}'
+            }), 404
+
+        # Delete the book from the database
+        db.session.delete(book)
+        db.session.commit()
+
+        # Return a success message
+        return jsonify({
+            'message': 'Book deleted successfully',
+            'deleted_book_id': book_id
+        }), 200
+
+    except Exception as e:
+        # Rollback the session in case of an error
+        db.session.rollback()
+        return jsonify({
+            'error': 'Failed to delete book',
+            'message': str(e)
+        }), 500
 
 
 

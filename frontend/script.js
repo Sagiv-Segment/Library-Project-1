@@ -6,16 +6,32 @@ async function getBooks() {
         booksList.innerHTML = ''; // Clear existing list
 
         response.data.books.forEach(book => {
-            booksList.innerHTML += `
-                <div class="book-card">
-                    <h3>${book.title}</h3>
-                    <p>Genre: ${book.genre}</p>
-                    <p>Price: ${book.price}</p>
-                    <p>Quantity: ${book.quantity}</p>
-                    <p>Loan Status: ${book.loan_status}</p>
-                    <p>Customer Loaning: ${book.customer_id}</p>
-                </div>
+            const bookCard = document.createElement('div');
+            bookCard.className = 'book-card';
+            bookCard.innerHTML = `
+                <h3>${book.title}</h3>
+                <p>Genre: ${book.genre}</p>
+                <p>Price: ${book.price}</p>
+                <p>Quantity: ${book.quantity}</p>
+                <p>Loan Status: ${book.loan_status}</p>
+                <p>Customer Loaning: ${book.customer_id}</p>
+                <button class="delete-btn" data-id="${book.id}">Delete</button>
             `;
+
+            // Add event listener to the delete button
+            const deleteButton = bookCard.querySelector('.delete-btn');
+            deleteButton.addEventListener('click', async () => {
+                try {
+                    await axios.delete(`http://127.0.0.1:5000/books/${book.id}`);
+                    bookCard.remove(); // Remove the book card from the DOM
+                    alert('Book deleted successfully');
+                } catch (error) {
+                    console.error('Error deleting book:', error);
+                    alert('Failed to delete book');
+                }
+            });
+
+            booksList.appendChild(bookCard);
         });
     } catch (error) {
         console.error('Error fetching books:', error);
