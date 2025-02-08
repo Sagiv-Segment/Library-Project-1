@@ -51,31 +51,72 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative; /* Added for positioning the right button */
   }
   
   .books-section h2 {
     font-size: 1.8rem;
     margin-bottom: 15px;
     color: #555;
+    display: inline-block; /* Ensure the heading doesn't take full width */
+  }
+  
+  /* Right Button Styles */
+  .right-button {
+    position: absolute;
+    top: 20px; /* Align with the top of the books-section */
+    right: 20px; /* Align with the right of the books-section */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  
+  .right-button:hover {
+    background-color: #0056b3;
   }
   
   /* Form Group */
   .form-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between input groups */
   }
   
-  .form-group input {
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between label, input, and requirements */
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .input-group input {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
   }
   
+  .input-group input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .requirements {
+    font-size: 0.9rem;
+    color: #ff4757; /* Red color for error messages */
+    display: none; /* Hidden by default */
+  }
+  
+  /* Add Book Button */
   .form-group button {
-    grid-column: span 2;
     background-color: #2ed573;
     color: white;
     border: none;
@@ -83,6 +124,7 @@
     cursor: pointer;
     font-size: 1rem;
     border-radius: 5px;
+    margin-top: 10px; /* Space above the button */
   }
   
   .form-group button:hover {
@@ -133,4 +175,74 @@
     .form-group button {
       grid-column: span 1;
     }
+  
+    /* Adjust right button for smaller screens */
+    .right-button {
+      position: static; /* Reset positioning */
+      margin-top: 10px; /* Add some spacing */
+      width: 100%; /* Full width for better usability */
+    }
+  }
+  
+  /* Overlay Styles */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Below the tab but above everything else */
+    display: none;
+  }
+  
+  .overlay.active {
+    display: block; /* Show overlay when tab is open */
+  }
+  
+  /* Action Tab Styles */
+  .action-tab {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Above the overlay */
+    width: 500px; /* Adjust width as needed */
+    max-height: 80vh; /* Limit height to 80% of viewport height */
+    overflow-y: auto; /* Add scroll if content exceeds height */
+    text-align: left; /* Align text to the left */
+  }
+  
+  .action-tab.hidden {
+    display: none; /* Hide the tab by default */
+  }
+  
+  .tab-content {
+    position: relative;
+    padding-top: 30px; /* Add space for the close button */
+  }
+  
+  .close-tab {
+    position: absolute;
+    top: 10px; /* Adjust top position */
+    right: 10px; /* Adjust right position */
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .close-tab:hover {
+    background-color: #ff6b81;
   }

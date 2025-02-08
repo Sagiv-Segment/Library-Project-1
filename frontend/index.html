@@ -19,21 +19,87 @@
 
         <div class="books-section">
           <h2>Add New Book</h2>
+          <button class="right-button" onclick="toggleTab()">Guide</button>
           <div class="form-group">
-            <input type="text" id="book-title" placeholder="Title" />
-            <input type="text" id="book-author" placeholder="Genres" />
-            <input type="text" id="book-year-published" placeholder="Price" />
-            <input type="text" id="game-quantity" placeholder="Quantity" />
-            <input type="text" id="loan-status" placeholder="Loan status" />
-            <input type="text" id="user-id" placeholder="User ID" />
+            <!-- Title -->
+            <div class="input-group">
+              <label for="book-title">Title</label>
+              <input type="text" id="book-title" placeholder="Enter book title" />
+              <span class="requirements"></span>
+              <label id="book-title-requirements" style="color: rgb(227, 45, 45);"></label>
+              <span class="requirements"></span>
+            </div>
+          
+            <!-- Genres -->
+            <div class="input-group">
+              <label for="book-author">Genres</label>
+              <input type="text" id="book-author" placeholder="Enter book genres" />
+              <span class="requirements"></span>
+              <label id="book-author-requirements" style="color: rgb(227, 45, 45);"></label>
+              <span class="requirements"></span>
+            </div>
+          
+            <!-- Price -->
+            <div class="input-group">
+              <label for="book-year-published">Price</label>
+              <input type="text" id="book-year-published" placeholder="Enter book price" />
+              <span class="requirements"></span>
+              <label id="book-year-published-requirements" style="color: rgb(227, 45, 45);"></label>
+              <span class="requirements"></span>
+
+            </div>
+          
+            <!-- Quantity -->
+            <div class="input-group">
+              <label for="game-quantity">Quantity</label>
+              <input type="text" id="game-quantity" placeholder="Enter quantity" />
+              <span class="requirements"></span>
+              <label id="game-quantity-requirements" style="color: rgb(227, 45, 45);"></label>
+              <span class="requirements"></span>
+
+            </div>
+          
+            <!-- Loan Status -->
+            <div class="input-group">
+              <label for="loan-status">Loan Status</label>
+              <input type="text" id="loan-status" placeholder="Enter loan status" />
+              <span class="requirements"></span>
+              <label id="loan-status-requirements" style="color: rgb(227, 45, 45);"></label>
+              <span class="requirements"></span>
+            </div>
+          
+            <!-- User ID -->
+            <div class="input-group">
+              <label for="user-id">User ID</label>
+              <input type="text" id="user-id" placeholder="Enter user ID" />
+              <span class="requirements"></span>
+              <label id="user-id-requirements" style="color: rgb(227, 45, 45);"></label>
+              <span class="requirements"></span>
+            </div>
+          
+            <!-- Add Book Button -->
             <button onclick="addBook()">Add Book</button>
           </div>
-
+        
           <h2>All Books</h2>
           <div id="books-list" class="books-grid"></div>
-
+        
           <h2>Loaned Books</h2>
           <div id="loaned-books-list" class="books-grid"></div>
+        </div>
+        
+        <!-- Overlay -->
+        <div class="overlay hidden"></div>
+        
+        <!-- Action Tab -->
+        <div id="action-tab" class="action-tab hidden">
+          <div class="tab-content">
+            <button class="close-tab" onclick="toggleTab()">×</button>
+            <h2>Loan status:</h2>
+            <p>Enter '1' if the game is currently loaned. Otherwise anything else</p>
+            <h2>Customer ID:</h2>
+            <p>Enter a customer's ID only if Loan status is true.</p>
+          </div>
         </div>
       </div>
     </div>
