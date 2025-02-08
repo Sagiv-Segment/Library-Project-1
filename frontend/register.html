@@ -8,20 +8,27 @@
 </head>
 <body>
     <div class="container">
-            <h2>Register</h2>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label id="username-requirement" style="color: rgb(208, 46, 46);"></label>
-            
-            
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <label id="password-requirement" style="color: rgb(208, 46, 46);"></label>
+        <h2>Register</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label id="username-requirement" style="color: rgb(208, 46, 46);"></label>
 
-            <button onclick="register()">Register</button>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <label id="password-requirement" style="color: rgb(208, 46, 46);"></label>
+
+        <button onclick="register()">Register</button>
+        <!-- Add a "Redirect to Login Page" button -->
+        <button onclick="redirectToLogin()">Already have an account?</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
     <script src="handle_register.js"></script>
+    <script>
+        // Function to redirect to the login page
+        function redirectToLogin() {
+            window.location.href = "login.html"; // Replace with your login page URL
+        }
+    </script>
 </body>
 </html>

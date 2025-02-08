@@ -201,6 +201,46 @@ def get_admin_by_username(username):
 
 
 
+
+# Update game
+@app.route('/updbooks/<int:book_id>', methods=['PUT'])
+def update_book(book_id):
+    data = request.json  # Parse the JSON data from the request body
+
+    # Find the book by ID
+    book = Game.query.get(book_id)
+    if not book:
+        return jsonify({'message': 'Book not found'}), 404
+
+    # Check if the customer exists if customer_id is provided
+    if 'customer_id' in data:
+        customer = Customer.query.get(data['customer_id'])
+        if not customer:
+            return jsonify({'message': 'Customer not found'}), 404
+
+    # Update the book fields with the new data
+    if 'title' in data:
+        book.title = data['title']
+    if 'genre' in data:
+        book.genre = data['genre']
+    if 'price' in data:
+        book.price = data['price']
+    if 'quantity' in data:
+        book.quantity = data['quantity']
+    if 'loan_status' in data:
+        book.loan_status = data['loan_status']
+    if 'customer_id' in data:
+        book.customer_id = data['customer_id']
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    return jsonify({'message': 'Book updated successfully'}), 200
+
+
+
+
+
 if __name__ == '__main__':
     # with app.app_context():
         # new_user = Admin(username="admin")

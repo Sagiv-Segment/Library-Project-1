@@ -14,12 +14,20 @@ async function getBooks() {
             bookCard.className = 'book-card';
             bookCard.innerHTML = `
                 <h3>${book.title}</h3>
-                <p>Genre: ${book.genre}</p>
-                <p>Price: ${book.price}</p>
-                <p>Quantity: ${book.quantity}</p>
-                <p>Loan Status: ${book.loan_status}</p>
-                <p>Customer Loaning: ${book.customer_id}</p>
-                <button class="delete-btn" data-id="${book.id}">Delete</button>
+                <label for="genre-${book.id}">Genre</label>
+                <input type="text" id="genre-${book.id}" value="${book.genre}">
+                <label for="price-${book.id}">Price</label>
+                <input type="text" id="price-${book.id}" value="${book.price}">
+                <label for="quantity-${book.id}">Quantity</label>
+                <input type="text" id="quantity-${book.id}" value="${book.quantity}">
+                <label for="loan-status-${book.id}">Loan Status</label>
+                <input type="text" id="loan-status-${book.id}" value="${book.loan_status ? '1' : '0'}">
+                <label for="customer-loaning-${book.id}">Customer Loaning</label>
+                <input type="text" id="customer-loaning-${book.id}" value="${book.customer_id}">
+                <div class="button-container">
+                    <button class="update-btn" data-id="${book.id}">Update</button>
+                    <button class="delete-btn" data-id="${book.id}">Delete</button>
+                </div>
             `;
 
             // Add event listener to the delete button
@@ -28,10 +36,40 @@ async function getBooks() {
                 try {
                     await axios.delete(`http://127.0.0.1:5000/books/${book.id}`);
                     bookCard.remove(); // Remove the book card from the DOM
-                    alert('Book deleted successfully');
+                    alert('Game deleted successfully');
                 } catch (error) {
-                    console.error('Error deleting book:', error);
+                    console.error('Error deleting game:', error);
                     alert('Failed to delete book');
+                }
+            });
+
+            // Add event listener to the update button
+            const updateButton = bookCard.querySelector('.update-btn');
+            updateButton.addEventListener('click', async () => {
+                try {
+                    const genre = document.getElementById(`genre-${book.id}`).value
+                    const price = document.getElementById(`price-${book.id}`).value
+                    const quantity = document.getElementById(`quantity-${book.id}`).value
+                    const loan_status = document.getElementById(`loan-status-${book.id}`).value === '1' 
+                    const customer_id = document.getElementById(`customer-loaning-${book.id}`).value
+                    if(!ValidateFormElements(genre, price, quantity, loan_status, customer_id)){
+                        alert("One of the fields is invalid. Check guide for details")
+                    }else{
+                        const updatedData = {
+                            genre: document.getElementById(`genre-${book.id}`).value,
+                            price: document.getElementById(`price-${book.id}`).value,
+                            quantity: document.getElementById(`quantity-${book.id}`).value,
+                            loan_status: document.getElementById(`loan-status-${book.id}`).value === '1', 
+                            customer_id: document.getElementById(`customer-loaning-${book.id}`).value,
+                        };
+    
+                        await axios.put(`http://127.0.0.1:5000/updbooks/${book.id}`, updatedData);
+                        alert('Book updated successfully');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error updating book:', error);
+                    alert('Failed to update book');
                 }
             });
 
@@ -42,6 +80,7 @@ async function getBooks() {
         alert('Failed to load books');
     }
 }
+
 
 // function to add a new book to the database
 async function addBook() {
@@ -76,6 +115,7 @@ async function addBook() {
         document.getElementById('user-id').value = '';
         // Refresh the books list
         getBooks();
+        getLoanedBooks();
         
         alert('Game added successfully!');
     } catch (error) {
@@ -165,7 +205,7 @@ function QuantityValidation() {
         display.textContent = "Quantity must be numeric";
         return false;
     }
-    display.textContent = ""; // Clear any previous error message
+    display.textContent = ""; 
     return true;
 }
 
@@ -214,6 +254,49 @@ function ValidateForm() {
 
 
 
+function ValidateFormElements(genre, price, quantity, loanStatus, userId) {
+    // const isTitleValid = TitleValidation();
+    // const isGenreValid = GenreValidation();
+    // const isPriceValid = PriceValidation();
+    // const isQuantityValid = QuantityValidation();
+    // const isUserIdValid = true;
+
+// Title
+    // if(title == ''){
+    //     return false
+    // }
+
+// Genre
+    if(genre == ''){
+        return false
+    }
+
+// Price
+    if (price === '') {
+        return false;
+    } else if (isNaN(price)) {
+        return false;
+    }
+
+// Quantity
+    if (quantity === '') {
+        return false;
+    } else if (isNaN(quantity)) {
+        return false;
+    }
+
+    //Loan and user validation
+    if (loanStatus === '1' && userId === '') {
+        return false;
+    }
+    if(loanStatus != '1' && userId != ''){
+        return false;
+    }
+
+
+    return true;
+
+}
 
 
 
@@ -221,7 +304,6 @@ function ValidateForm() {
 
 
 //Loaned books
-
 
 
 async function getLoanedBooks() {
@@ -235,12 +317,20 @@ async function getLoanedBooks() {
             bookCard.className = 'book-card';
             bookCard.innerHTML = `
                 <h3>${book.title}</h3>
-                <p>Genre: ${book.genre}</p>
-                <p>Price: ${book.price}</p>
-                <p>Quantity: ${book.quantity}</p>
-                <p>Loan Status: ${book.loan_status}</p>
-                <p>Customer Loaning: ${book.customer_id}</p>
-                <button class="delete-btn" data-id="${book.id}">Delete</button>
+                <label for="loan-genre-${book.id}">Genre</label>
+                <input type="text" id="loan-genre-${book.id}" value="${book.genre}">
+                <label for="loan-price-${book.id}">Price</label>
+                <input type="text" id="loan-price-${book.id}" value="${book.price}">
+                <label for="loan-quantity-${book.id}">Quantity</label>
+                <input type="text" id="loan-quantity-${book.id}" value="${book.quantity}">
+                <label for="loan-loan-status-${book.id}">Loan Status</label>
+                <input type="text" id="loan-loan-status-${book.id}" value="${book.loan_status ? '1' : '0'}">
+                <label for="loan-customer-loaning-${book.id}">Customer Loaning</label>
+                <input type="text" id="loan-customer-loaning-${book.id}" value="${book.customer_id}">
+                <div class="button-container">
+                    <button class="update-btn" data-id="${book.id}">Update</button>
+                    <button class="delete-btn" data-id="${book.id}">Delete</button>
+                </div>
             `;
 
             // Add event listener to the delete button
@@ -249,10 +339,40 @@ async function getLoanedBooks() {
                 try {
                     await axios.delete(`http://127.0.0.1:5000/books/${book.id}`);
                     bookCard.remove(); // Remove the book card from the DOM
-                    alert('Book deleted successfully');
+                    alert('Game deleted successfully');
                 } catch (error) {
-                    console.error('Error deleting book:', error);
+                    console.error('Error deleting game:', error);
                     alert('Failed to delete book');
+                }
+            });
+
+            // Add event listener to the update button
+            const updateButton = bookCard.querySelector('.update-btn');
+            updateButton.addEventListener('click', async () => {
+                try {
+                    const genre = document.getElementById(`loan-genre-${book.id}`).value
+                    const price = document.getElementById(`loan-price-${book.id}`).value
+                    const quantity = document.getElementById(`loan-quantity-${book.id}`).value
+                    const loan_status = document.getElementById(`loan-loan-status-${book.id}`).value === '1' 
+                    const customer_id = document.getElementById(`loan-customer-loaning-${book.id}`).value
+                    if(!ValidateFormElements(genre, price, quantity, loan_status, customer_id)){
+                        alert("One of the fields is invalid. Check guide for details")
+                    }else{
+                        const updatedData = {
+                            genre: document.getElementById(`loan-genre-${book.id}`).value,
+                            price: document.getElementById(`loan-price-${book.id}`).value,
+                            quantity: document.getElementById(`loan-quantity-${book.id}`).value,
+                            loan_status: document.getElementById(`loan-loan-status-${book.id}`).value === '1', 
+                            customer_id: document.getElementById(`loan-customer-loaning-${book.id}`).value,
+                        };
+    
+                        await axios.put(`http://127.0.0.1:5000/updbooks/${book.id}`, updatedData);
+                        alert('Book updated successfully');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error updating book:', error);
+                    alert('Failed to update book');
                 }
             });
 
@@ -263,6 +383,12 @@ async function getLoanedBooks() {
         alert('Failed to load books');
     }
 }
+
+
+
+
+
+
 
 
 
