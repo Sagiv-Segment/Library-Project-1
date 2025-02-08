@@ -1,3 +1,7 @@
+function logout(){
+    window.location.href = "login.html"
+}
+
 // function to get all books from the API
 async function getBooks() {
     try {

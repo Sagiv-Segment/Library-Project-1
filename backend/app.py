@@ -163,13 +163,40 @@ def get_loaned_books():
 
 
 
+@app.route('/register', methods=['POST'])
+def add_admin():
+    data = request.json
+    try:
+        new_admin = Admin(
+            username=data['username'],
+            password=data['password']
+        )
+        db.session.add(new_admin)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Admin added to database.'}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+# get existing user
 
 
+# Route to check if an admin exists by username
+@app.route('/admin/<username>', methods=['GET'])
+def get_admin_by_username(username):
+    # Query the database for an admin with the given username
+    admin = Admin.query.filter_by(username=username).first()
 
-
-
-
-
+    # If the admin exists, return their details
+    if admin:
+        return jsonify({
+            'id': admin.id,
+            'username': admin.username,
+            'password': admin.password  # Note: In a real app, never return passwords!
+        }), 200
+    else:
+        # If the admin doesn't exist, return a 404 error
+        return jsonify({'error': 'Admin not found'}), 404
 
 
 

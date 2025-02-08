@@ -15,7 +15,7 @@ async function login() {
 
       if (response.data.success) {
           alert("Login successful!");
-          window.location.href = "http://127.0.0.1:5500/frontend/index.html"; // Redirect to dashboard
+          window.location.href = "http://127.0.0.1:5500/frontend/index.html"; // Redirect
       } else {
           alert("Invalid credentials.");
       }
@@ -23,4 +23,8 @@ async function login() {
       alert("Error logging in. Please try again.");
       console.error("Login error:", error.response?.data || error.message);
   }
+}
+
+function register(){
+    window.location.href = "register.html"
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+    <div class="container">
+            <h2>Register</h2>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label id="username-requirement" style="color: rgb(208, 46, 46);"></label>
+            
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <label id="password-requirement" style="color: rgb(208, 46, 46);"></label>
+
+            <button onclick="register()">Register</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
+    <script src="handle_register.js"></script>
+</body>
+</html>
