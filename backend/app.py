@@ -123,6 +123,57 @@ def delete_book(book_id):
 
 
 
+
+
+
+
+@app.route('/books/loaned', methods=['GET'])
+def get_loaned_books():
+    try:
+        books = Game.query.filter_by(loan_status=1).all()             
+
+        # Create empty list to store formatted book data we get from the database
+        books_list = []
+
+        for book in books:                         # Loop through each book from database
+            book_data = {                          # Create a dictionary for each book
+                'id': book.id,
+                'title': book.title,
+                'genre': book.genre,
+                'price': book.price,
+                'quantity': book.quantity,
+                'loan_status': book.loan_status,
+                'customer_id': book.customer_id
+            }
+            # Add the iterated book dictionary to our list
+            books_list.append(book_data)
+
+        return jsonify({                           # Return JSON response
+            'message': 'Books retrieved successfully',
+            'books': books_list
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'error': 'Failed to retrieve books',
+            'message': str(e)
+        }), 500                                    #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     # with app.app_context():
         # new_user = Admin(username="admin")

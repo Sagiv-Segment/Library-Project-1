@@ -208,5 +208,60 @@ function ValidateForm() {
     return isTitleValid && isGenreValid && isPriceValid && isQuantityValid && isUserIdValid;
 }
 
+
+
+
+
+
+
+
+
+//Loaned books
+
+
+
+async function getLoanedBooks() {
+    try {
+        const response = await axios.get('http://127.0.0.1:5000/books/loaned');
+        const booksList = document.getElementById('loaned-books-list');
+        booksList.innerHTML = ''; // Clear existing list
+
+        response.data.books.forEach(book => {
+            const bookCard = document.createElement('div');
+            bookCard.className = 'book-card';
+            bookCard.innerHTML = `
+                <h3>${book.title}</h3>
+                <p>Genre: ${book.genre}</p>
+                <p>Price: ${book.price}</p>
+                <p>Quantity: ${book.quantity}</p>
+                <p>Loan Status: ${book.loan_status}</p>
+                <p>Customer Loaning: ${book.customer_id}</p>
+                <button class="delete-btn" data-id="${book.id}">Delete</button>
+            `;
+
+            // Add event listener to the delete button
+            const deleteButton = bookCard.querySelector('.delete-btn');
+            deleteButton.addEventListener('click', async () => {
+                try {
+                    await axios.delete(`http://127.0.0.1:5000/books/${book.id}`);
+                    bookCard.remove(); // Remove the book card from the DOM
+                    alert('Book deleted successfully');
+                } catch (error) {
+                    console.error('Error deleting book:', error);
+                    alert('Failed to delete book');
+                }
+            });
+
+            booksList.appendChild(bookCard);
+        });
+    } catch (error) {
+        console.error('Error fetching books:', error);
+        alert('Failed to load books');
+    }
+}
+
+
+
 // Load all books when page loads
 document.addEventListener('DOMContentLoaded', getBooks);
+document.addEventListener('DOMContentLoaded', getLoanedBooks);
